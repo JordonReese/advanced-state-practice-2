@@ -4,17 +4,39 @@ import CarListing from "./components/CarListing";
 class App extends Component {
   constructor() {
     super();
-    this. state = {
+    this.state = {
       currentYear:null,
       currentMake:null,
     };
   }
   render() {
     const {carsForSale,vehicleData,allYears} = this.props.state;
+    let currentYear = allYears.map((year, indx) => {
+        return <option key={indx} year={year}>{year}</option>
+      })
+
+    let currentModel = vehicleData.map((vehicle, indx) => {
+      return <option key={indx} value={vehicle.value}>{vehicle.title}</option>
+    })
+
+    let filteredCars = carsForSale.filter((car) => {
+      if (this.state.currentYear) {
+        return car.year === this.state.currentYear;
+      } else if (this.state.currentMake) {
+        return car.make.toUpperCase() === this.state.currentMake;
+      } else {
+        return car.id > 0;
+      }
+    })
+
+    let carListing = filteredCars.map((car, indx) => {
+      return <CarListing key={indx} car={car} />
+    })
+
 
     return (
       <div >
-<div className="switcher-wrapper">	
+<div className="switcher-wrapper">
     <div className="demo_changer">
         <div className="demo-icon customBgColor"><i className="fa fa-cog fa-spin fa-2x"></i></div>
         <div className="form_holder">
@@ -163,7 +185,7 @@ class App extends Component {
           </div>
         </div>
         <div className="row">
-        <CarListing />
+        {carListing}
         </div>
         <div className="pagination">
           <ul>
@@ -175,7 +197,7 @@ class App extends Component {
           </ul>
         </div>
       </div>
-    
+
       <aside className="col-md-3 col-md-pull-9">
         <div className="sidebar_widget">
           <div className="widget_heading">
@@ -184,16 +206,13 @@ class App extends Component {
           <div className="sidebar_filter">
             <form action="http://themes.webmasterdriver.net/carforyou/demo/listing-grid.html#" method="get">
               <div className="form-group select">
-                <select className="form-control">
+                <select className="form-control" onChange={(e) =>{
+                  this.setState({
+                    currentYear: e.target.value
+                  });
+                }}>
                   <option>Select Year</option>
-                  <option>2017</option>
-                  <option>2016</option>
-                  <option>2015</option>
-                  <option>2014</option>
-                  <option>2013</option>
-                  <option>2012</option>
-                  <option>2011</option>
-                  <option>2010</option>
+                  {currentYear}
                 </select>
               </div>
               <div className="form-group select">
@@ -210,16 +229,13 @@ class App extends Component {
                 </select>
               </div>
               <div className="form-group select">
-                <select className="form-control">
+                <select className="form-control" onChange={(e) =>{
+                  this.setState({
+                    currentMake: e.target.value
+                  })
+                }}>
                   <option>Select Brand</option>
-                  <option>Audi</option>
-                  <option>BMW</option>
-                  <option>Nissan</option>
-                  <option>Toyota</option>
-                  <option>Volvo</option>
-                  <option>Mazda</option>
-                  <option>Mercedes-Benz</option>
-                  <option>Lotus</option>
+                  {currentModel}
                 </select>
               </div>
               <div className="form-group select">
@@ -338,10 +354,10 @@ class App extends Component {
               <img src="./brand-logo-4.png" className="img-responsive" alt="image" /></a></div></div><div className="owl-item" style={{width: "204px"}}>
                 <div><a href="http://themes.webmasterdriver.net/carforyou/demo/listing-grid.html#"><img src="./brand-logo-5.png" className="img-responsive" alt="image" /></a></div>
                 </div></div></div>
-        
-        
-        
-        
+
+
+
+
       <div className="owl-controls clickable" style={{display: "block"}}><div className="owl-pagination"><div className="owl-page"><span className=""></span></div><div className="owl-page active"><span className=""></span></div></div></div></div>
     </div>
   </div>
@@ -463,7 +479,7 @@ class App extends Component {
         </div>
       </div>
       <div className="modal-footer text-center">
-        <p>Don't have an account? <a href="http://themes.webmasterdriver.net/carforyou/demo/listing-grid.html#signupform" data-toggle="modal" data-dismiss="modal">Signup Here</a></p>
+        <p>"Don't have an account?" <a href="http://themes.webmasterdriver.net/carforyou/demo/listing-grid.html#signupform" data-toggle="modal" data-dismiss="modal">Signup Here</a></p>
         <p><a href="http://themes.webmasterdriver.net/carforyou/demo/listing-grid.html#forgotpassword" data-toggle="modal" data-dismiss="modal">Forgot Password ?</a></p>
       </div>
     </div>
@@ -538,7 +554,7 @@ class App extends Component {
                 </div>
               </form>
               <div className="text-center">
-                <p className="gray_text">For security reasons we don't store your password. Your password will be reset and a new one will be send.</p>
+                <p className="gray_text">"For security reasons we don't store your password. Your password will be reset and a new one will be send."</p>
                 <p><a href="http://themes.webmasterdriver.net/carforyou/demo/listing-grid.html#loginform" data-toggle="modal" data-dismiss="modal"><i className="fa fa-angle-double-left" aria-hidden="true"></i> Back to Login</a></p>
               </div>
             </div>
